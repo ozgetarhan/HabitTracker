@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import com.example.habittracker.databinding.FragmentAddHabitBinding
 
@@ -12,6 +13,9 @@ class AddHabitFragment : Fragment() {
 
     private var _binding: FragmentAddHabitBinding? = null
     private val binding get() = _binding!!
+
+    // HomeFragment ile aynı ViewModel örneğine bağlanıyoruz
+    private val viewModel: HabitViewModel by activityViewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,10 +32,10 @@ class AddHabitFragment : Fragment() {
             val habitTitle = binding.etHabitName.text.toString()
 
             if (habitTitle.isNotEmpty()) {
-                // Listeye yeni alışkanlığı ekle
-                MainActivity.habitList.add(Habit(habitTitle, false))
+                // Veriyi doğrudan ViewModel fonksiyonuna gönderiyoruz
+                viewModel.addHabit(habitTitle)
 
-                // Önceki sayfaya (HomeFragment) geri dön
+                // Ana sayfaya geri dönüyoruz
                 findNavController().popBackStack()
             }
         }
